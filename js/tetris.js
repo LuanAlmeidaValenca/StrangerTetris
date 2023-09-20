@@ -1,4 +1,8 @@
+const TetrisUm = document.getElementById("canvasOne");
+const contextoUm = TetrisUm.getContext("2d");
 
+const TetrisDois = document.getElementById("canvasTwo");
+const contextoDois = TetrisDois.getContext("2d");
 
 const EstadoInicialTeclado = () =>({   //Estado Inicial das teclas, todas tendem a começar False por motivos Obvios
     w: false,
@@ -19,9 +23,9 @@ const EstadoTecladoAtualizado = (tecla, estado, valorBase) => {   //O método ha
     }
 }
 
-//processamento de Atualizações das teclas
+//processamento de Atualizações das teclas Primarias
 
-const tratamentoPressionamentoTeclas = (evento, estado) =>{
+const tratamentoPressionamentoTeclasWASD = (evento, estado) =>{
     const tecla = evento.tecla.toLowerCase();
     if(tecla == "w" || tecla == "s" || tecla =="d"|| tecla == "a"){
         evento.preventDefault();
@@ -29,6 +33,28 @@ const tratamentoPressionamentoTeclas = (evento, estado) =>{
     }else{
         return estado
     }
+}
+
+//Processamento de Atualização das Teclas Secundarias
+
+const tratamentoPrecionamentoSetas = (evento, estado) => {
+    const tecla = evento.tecla;
+    if(tecla == "setaParaCima"){
+        evento.preventDefault();
+        return EstadoTecladoAtualizado(estado, "SetaCimaPressionada", true);
+    }else if(tecla == "setaParaBaixo"){
+        evento.preventDefault();
+        return EstadoTecladoAtualizado(estado, "SetaBaixoPressionada", true);
+    }else if(tecla == "setaParaDireita"){
+        evento.preventDefault();
+        return EstadoTecladoAtualizado(estado, "SetaDireitaPressionada", true);
+    }else if(tecla == "setaParaEsquerda"){
+        evento.preventDefault();
+        return EstadoTecladoAtualizado(estado, "SetaEsquerdaPressionada", true);
+    }else{
+        return estado;
+    }
+
 }
 
 
