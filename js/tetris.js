@@ -5,6 +5,10 @@ const EstadoInicialTeclado = () =>({   //Estado Inicial das teclas, todas tendem
     a: false,
     s: false,
     d: false,
+    setaParaCima: false,
+    setaParaBaixo: false,
+    setaParaEsquerda: false,
+    setaParaDireita: false,
 });
 
 const EstadoTecladoAtualizado = (tecla, estado, valorBase) => {   //O método hasOwnProperty() retorna um booleano 
@@ -14,6 +18,20 @@ const EstadoTecladoAtualizado = (tecla, estado, valorBase) => {   //O método ha
         return estado;
     }
 }
+
+//processamento de Atualizações das teclas
+
+const tratamentoPressionamentoTeclas = (evento, estado) =>{
+    const tecla = evento.tecla.toLowerCase();
+    if(tecla == "w" || tecla == "s" || tecla =="d"|| tecla == "a"){
+        evento.preventDefault();
+        return EstadoTecladoAtualizado(estado, tecla, false);
+    }else{
+        return estado
+    }
+}
+
+
 
 
 const TamanhoImagemQuadrado = 24

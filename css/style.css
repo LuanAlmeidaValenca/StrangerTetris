@@ -19,3 +19,10 @@ h4{
     text-align: right;
     color: white;
 }
+
+canvas{ 
+    border: 1px solid black;
+    display: block;
+    margin: 10px auto;
+    background-color: white;
+}
