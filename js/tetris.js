@@ -1,7 +1,9 @@
 //Servidor Usando socket.io
+
+const express = require('express');
+
 const { Console } = require('console');
 const exp = require('constants');
-const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
 
