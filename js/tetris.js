@@ -1,3 +1,50 @@
+//Servidor Usando socket.io
+const { Console } = require('console');
+const exp = require('constants');
+const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
+
+const configurarExpress = () => {
+    const app = express();
+    const servidor = http.createServer(app)
+    return {app, servidor}
+}
+
+const configurarWebSocket = (servidor) => {
+    const IO = socketIO(servidor);
+
+    const conexaoLigada = (socket) => {
+        console.log("Um Cliente foi Conectado No Servidor")
+
+        const ConexaoDesligada = () => {
+            console.log("Um Cliente Foi Desconectado do Servidor")
+        }
+
+        socket.on('disconnect', ConexaoDesligada);
+    };
+    IO.on('connection', conexaoLigada);
+
+};
+//função para ligar o protocolo http
+const iniciarHTTP = (servidor, port) => {
+    servidor.listen(port, () => {
+        console.log('Servidor Ligado na Porta: ${port}')
+    })
+}
+
+//configuração do server express junto ao WEBSOCKET 
+const {app, servidor} = configurarExpress();
+const io = configurarWebSocket(servidor);
+
+
+//ligar servidor na porta 3000
+
+iniciarHTTP(servidor, 3000);
+
+
+
+// Modificações por conta propria
 const TetrisUm = document.getElementById("canvasOne");
 const contextoUm = TetrisUm.getContext("2d");
 
@@ -73,33 +120,16 @@ Imaginem que Cada figura do Tetris é um array de 3x3, onde as partes que possue
 Logo quando formarem Fileiras de arrays compostas somente de 1 ela sera destruida e subirá a pontuação do jogador e aumentará o a velocidade de queda em 0.12 segundos
 */
 
-const pecas = [
-    [0, 0, 0,
-     0, 1, 1,  // quadrado
-     0, 1, 1]
+const pecas = {
+    I: [[1,1,1]],
+    J: [[1,0,0], [1,1,1]],
+    L: [[0, 0, 1], [1, 1, 1]],
+    O: [[1, 1], [1, 1]],
+    T: [[0, 1, 0], [1, 1, 1]],
+    S: [[0, 1, 1], [1, 1, 0]],
+    Z: [[1, 1, 0], [0, 1, 1]],
+};
 
-    [1, 0, 0,
-     1, 0 ,0, // I
-     1, 0, 0]
+
     
-    [1,0 ,0,
-     1,0 ,0, // L
-     1, 1,0]
-
-    [0, 0, 1,
-     0, 0 ,1,  // J
-     0, 1, 1]
-
-    [0, 0, 0,
-     0, 1, 1, //z
-     1, 1, 0]
-
-    [0, 0, 0,
-     1, 1, 0, //s
-     0, 1, 1]
-
-    [1, 1, 1,
-     0, 1, 0, //T
-     0, 1, 0] 
-    ]
 
