@@ -297,7 +297,42 @@
      
   </script>
       <canvas width="250" height="500" id="TelaDois"></canvas>
-     
+     <script>
+        // Função de utilidade para gerar números inteiros aleatórios
+        const getRandomInt2 = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+      
+        // Função para gerar a sequência aleatória das peças
+        const generateSequence2 = () => {
+          const sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
+          const shuffledSequence = [...sequence];
+      
+          for (let i = shuffledSequence.length - 1; i > 0; i--) {
+            const j = getRandomInt2(0, i);
+            [shuffledSequence[i], shuffledSequence[j]] = [shuffledSequence[j], shuffledSequence[i]];
+          }
+      
+          return shuffledSequence;
+        };
+       
+  // Função para obter a próxima peça da sequência
+        const getNextTetromino2 = () => {
+          if (tetrominoSequence.length === 0) {
+            tetrominoSequence.push(...generateSequence2());
+          }
+      
+          const name = tetrominoSequence.pop();
+          const matrix = tetrominoes2[name];
+          const col = Math.floor(playfield2[0].length / 2) - Math.ceil(matrix[0].length / 2);
+          const row = 20 - matrix.length; // Alterado para 20 menos a altura da peça
+      
+          return {
+            name,
+            matrix,
+            row,
+            col
+          };
+        };
+       
       <script>
         // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
         const atualizarPontosTotal = () => {
