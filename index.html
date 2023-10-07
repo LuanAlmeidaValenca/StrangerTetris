@@ -1,27 +1,314 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <script type= "text/javascript"js src="js/tetris.js"></script>
+  <title>STRANGER TETRIS</title>
+  <meta charset="UTF-8">
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+  *{
+    font-family: 'Press Start 2P', cursive;
+    background-color: rgb(0, 0, 0);
+  }
+  .TETRIS {
+  text-align: center;
+}
+  html, body {   
 
-    <title>Stranger Tetris</title>
+    height: 100%;
+    margin: 0;
+  }
+    h1{
+        text-align: center;
+        color: white;
+    }
+    h6{
+        text-align: center;
+        color: white;
+    }
+    h4{
+        text-align: right;
+        color: white;
+    }
+
+  canvas{ 
+    border: 1px solid black;
+    margin: 10px auto;
+    background-color: white;
+}
+    .pontuacao {
+        color: white;
+        font-size: 20px;
+        text-align: center;
+        position: flex;
+        top: 10px;
+        right: 10px;
+    }
+  </style>
 </head>
 <body>
-    <div id="TETRIS" class="TETRIS">
-        <h1>WELCOME TO THE STRANGER TETRIS</h1>
-        <h6 >PRESS ANY KEY TO START</h6>
-        <canvas id="TelaUm" width="400" height="420"></canvas>
-        <canvas id="TelaDois" width="400" height="420"></canvas>
-        <h4>TIME</h4>
-        <h4>SPEED</h4>
-        <h4>SCORE</h4>
-        <div 
+  <div id="TETRIS" class="TETRIS">
+    <h1>WELCOME TO THE STRANGER TETRIS</h1>
+    <h6 >PRESS ANY KEY TO START</h6>
+    <div class="pontuacao" id="pontuacao">Pontos: 0</div>
+    <canvas width="250" height="500" id="TelaUm" class="TelaUm"></canvas>
+    <script>
+            //Declaração de uma variavel global para somar os Pontos dos dois jogos
+            let pontosTotais = 0;
+    </script>
+    <script>
+      // Função para gerar números inteiros aleatórios 
+      const gerarNumeroAleatorio = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+  
+      // Função que gera uma sequência aleatória das peças 
+      const GeradorDeAleatoriedade = () => {
+          const sequencia = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']; //Peças ja criadas e existentes
+  
+          return sequencia
+              .map((a) => ({ sort: Math.random(), value: a }))
+              .sort((a, b) => a.sort - b.sort)
+              .map((a) => a.value);
+      };
+      
+      // Função para obter a próxima peça da sequência, Ele recebe a proxima peça de acordo com o GeradorDeAleatoriedade
+      const ProximaPecaDeTetris = () => {
+          if (SequenciaTetris.length === 0) {
+              SequenciaTetris.push(...GeradorDeAleatoriedade());
+          }
+  
+          const name = SequenciaTetris.pop();
+          const matrix = PecasTetris[name];
+          const col = FrameDoJogo[0].length / 2 - Math.ceil(matrix[0].length / 2);
+          const row = name === 'I' ? -1 : -2;
+  
+          return {
+              name,
+              matrix,
+              row,
+              col
+          };
+      };
+  
+      // Função para rotacionar uma matriz, ela mapeia os dados da matriz usando o map para uma nova matriz, o row cria uma nova matriz e efetua uma troca e reverse a gira em 90Graus no sentido horario
+      const rotate = matrix => matrix[0].map((_, i) => matrix.map(row => row[i])).reverse();
+  
+      // Função para verificar se um movimento é válido, verificando se a posição almejada nao esta ocupada por uma peça ou barreira
+      const isValidMove = (matrix, cellRow, cellCol) =>  //matrix é a peça que sera verificada, cellrow a linha que sera verificada e cellcol a Coluna que sera verificada
+          matrix.every((row, rowIndex) =>           
+              row.every((val, colIndex) =>
+                  !val || (
+                      cellCol + colIndex >= 0 &&
+                      cellCol + colIndex < FrameDoJogo[0].length &&
+                      cellRow + rowIndex < FrameDoJogo.length &&
+                      !FrameDoJogo[cellRow + rowIndex][cellCol + colIndex]
+                  )
+              )
+          );
+  
+      // Função para colocar a peça de tetris no campo de jogo
+      const InjetarPecaTetris = () => {
+          tetromino.matrix.forEach((row, rowIndex) => {
+              row.forEach((val, colIndex) => {
+                  if (val) {
+                      if (tetromino.row + rowIndex < 0) {
+                          return showGameOver();
+                      }
+  
+                      FrameDoJogo[tetromino.row + rowIndex][tetromino.col + colIndex] = tetromino.name;
+                  }
+              });
+          });
+          //variavel para contar quantas linhas ja foram quebradas
+          let ColunasCheias = 0;
+  
+          FrameDoJogo.forEach((row, rowIndex) => {
+              if (row.every(cell => !!cell)) {
+                  FrameDoJogo.splice(rowIndex, 1);
+                  FrameDoJogo.unshift(Array(10).fill(0));
+                  ColunasCheias++;
+              }
+          });
+  
+          if (ColunasCheias > 0) {
+              atualizarPontos(ColunasCheias);
+          }
+  
+          tetromino = ProximaPecaDeTetris();
+      };
+  
+      // Função para exibir a tela de game over
+      const showGameOver = () => {
+          cancelAnimationFrame(rAF);
+          gameOver = true;
+  
+          context.fillStyle = 'black';
+          context.globalAlpha = 0.75;
+          context.fillRect(0, canvas.height / 2 - 30, canvas.width, 60);
+  
+          context.globalAlpha = 1;
+          context.fillStyle = 'white';
+          context.font = '36px monospace';
+          context.textAlign = 'center';
+          context.textBaseline = 'middle';
+          context.fillText('GAME OVER!', canvas.width / 2, canvas.height / 2);
+      };
+  
+      const canvas = document.getElementById('TelaUm');
+      const context = canvas.getContext('2d');
+      const grid = 25;
+      const SequenciaTetris = [];
+  
+      const FrameDoJogo = Array.from({ length: 20 }, () => Array(10).fill(0));
+  
+      const PecasTetris = {
+          'I': [
+              [0, 0, 0, 0],
+              [1, 1, 1, 1],
+              [0, 0, 0, 0],
+              [0, 0, 0, 0]
+          ],
+          'J': [
+              [1, 0, 0],
+              [1, 1, 1],
+              [0, 0, 0],
+          ],
+          'L': [
+              [0, 0, 1],
+              [1, 1, 1],
+              [0, 0, 0],
+          ],
+          'O': [
+              [1, 1],
+              [1, 1],
+          ],
+          'S': [
+              [0, 1, 1],
+              [1, 1, 0],
+              [0, 0, 0],
+          ],
+          'Z': [
+              [1, 1, 0],
+              [0, 1, 1],
+              [0, 0, 0],
+          ],
+          'T': [
+              [0, 1, 0],
+              [1, 1, 1],
+              [0, 0, 0],
+          ]
+      };
+  
+      const CoresTetris = {
+          'I': 'cyan',
+          'O': 'yellow',
+          'T': 'purple',
+          'S': 'green',
+          'Z': 'red',
+          'J': 'blue',
+          'L': 'orange'
+      };
+  
+      let count = 0;
+      let tetromino = ProximaPecaDeTetris();
+      let rAF = null;
+      let gameOver = false;
+  
+      const loop = () => {
+          rAF = requestAnimationFrame(loop);
+          context.clearRect(0, 0, canvas.width, canvas.height);
+  
+          FrameDoJogo.forEach((row, rowIndex) => {
+              row.forEach((cell, colIndex) => {
+                  if (cell) {
+                      context.fillStyle = CoresTetris[cell];
+                      context.fillRect(colIndex * grid, rowIndex * grid, grid - 1, grid - 1);
+                  }
+              });
+          });
+  
+          if (tetromino) {
+              if (++count > 30) {
+                  tetromino.row++;
+                  count = 0;
+  
+                  if (!isValidMove(tetromino.matrix, tetromino.row, tetromino.col)) {
+                      tetromino.row--;
+                      InjetarPecaTetris();
+                  }
+              }
+  
+              context.fillStyle = CoresTetris[tetromino.name];
+  
+              tetromino.matrix.forEach((row, rowIndex) => {
+                  row.forEach((val, colIndex) => {
+                      if (val) {
+                          context.fillRect(
+                              (tetromino.col + colIndex) * grid,
+                              (tetromino.row + rowIndex) * grid,
+                              grid - 1,
+                              grid - 1
+                          );
+                      }
+                  });
+              });
+          }
+          
+      };
+  
+      document.addEventListener('keydown', (e) => {
+          if (gameOver) return;
+  
+          const col = tetromino.col;
+          const row = tetromino.row;
+  
+          if (e.which === 65) {
+              const newCol = col - 1;
+              if (isValidMove(tetromino.matrix, row, newCol)) {
+                  tetromino.col = newCol;
+              }
+          } else if (e.which === 68) {
+              const newCol = col + 1;
+              if (isValidMove(tetromino.matrix, row, newCol)) {
+                  tetromino.col = newCol;
+              }
+          } else if (e.which === 87) {
+              const rotatedMatrix = rotate(tetromino.matrix);
+              if (isValidMove(rotatedMatrix, row, col)) {
+                  tetromino.matrix = rotatedMatrix;
+              }
+          } else if (e.which === 83) {
+              const newRow = row + 1;
+              if (isValidMove(tetromino.matrix, newRow, col)) {
+                  tetromino.row = newRow;
+              } else {
+                  InjetarPecaTetris();
+              }
+          }
+      });
+  
+      rAF = requestAnimationFrame(loop);
 
-        <img src="rotations.png" style="display: none;"/>
-        <script src="js/tetris.js"></script>
-    </div>
-    
+      let pontos1 = 0;
+      const atualizarPontos = (linhas) => {
+      const pontosPorLinha = [0, 100, 300, 500, 800];
+      pontos1 += pontosPorLinha[linhas];
+      pontosTotais = pontos1 + pontos2;
+      atualizarPontosTotal();
+};
+     
+  </script>
+      <canvas width="250" height="500" id="TelaDois"></canvas>
+     
+      <script>
+        // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
+        const atualizarPontosTotal = () => {
+          const elementoPontuacao = document.getElementById('pontuacao');
+          elementoPontuacao.textContent = `Pontuação Total: ${pontosTotais}`;
+        }   
+
+        atualizarPontosTotal();
+        
+      </script>    
+  </div>
+
 </body>
 </html>
