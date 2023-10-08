@@ -365,8 +365,12 @@
           });
         }
           let linesToRemove = [];
-
-
+       // Verifica se há linhas completas
+          for (let row = playfield2.length - 1; row >= 0; row--) {
+            if (playfield2[row].every(cell => !!cell)) {
+              linesToRemove.push(row);
+            }
+          }
      </script>
       <script>
         // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
