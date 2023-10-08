@@ -534,6 +534,18 @@
            }
          }
        });
+
+       /*Função que conta a pontuaçao da tela 2 a partir da quantiadde de linhas quebradas, recebendo 'Linhas',
+       a Pontuação vai de 100 a 800 variando com a quantiade de linhas quebradas*/
+         const autalizarPontos2 = (linhas) => {
+           const pontosPorlinha = [0, 100, 300, 500, 800];
+           pontos2 += pontosPorLinha[linhas];
+           pontosTotais = ponto1 + pontos2;
+           atualizarPontosTotal();
+         };
+       //Faz o requerimento para começar o loop (necessita que o loopTelaDois exista)
+         rAF2 = requestAnimationFrame(loopTelaDois);
+       
        //variável para contar os pontos da tela2
        let pontos2 = 0; 
      </script>
