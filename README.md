@@ -5,3 +5,5 @@ Referência utilizada para o desenvolvimento do "Stranger Tetris":
 https://github.com/chrokh/fp-games/tree/master/002-tetris
 
 Video explicativo do jogo: https://youtu.be/qJzP3DSYh3o
+
+site com o Game, Publicado via Netlify: https://strangertetris.netlify.app/
