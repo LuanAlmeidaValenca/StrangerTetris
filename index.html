@@ -380,6 +380,14 @@
           for (let i = 0; i < linesToRemove.length; i++) {
             playfield2.unshift(Array(10).fill(0));
           }
+       // Decrementa as linhas, para faze as que se encontram abaixo subirem
+         tetromino2.row -= linesToRemove.lenght;
+
+         tetromino2 = getNextTetromino2();
+         if (!isValidMove2(tetromino2.matrix, tetromino2.row, tetromino2.col)) {
+           showGameOver2();
+         }
+       };
      </script>
       <script>
         // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
