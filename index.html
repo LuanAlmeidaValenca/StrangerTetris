@@ -349,6 +349,24 @@
             )
           );
 
+          // Função para colocar a peça de tetris no campo de jogo
+        const placeTetromino2 = () => {
+          tetromino2.matrix.forEach((row, rowIndex) => {
+            row.forEach((val, colIndex) => {
+              if (val) {
+                const playfieldRow = tetromino2.row + rowIndex;
+                const playfieldCol = tetromino2.col + colIndex;
+      
+                if (playfieldRow >= 0) {
+                  playfield2[playfieldRow][playfieldCol] = tetromino2.name;
+                    }
+              }
+            });
+          });
+        }
+          let linesToRemove = [];
+
+
      </script>
       <script>
         // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
