@@ -297,7 +297,7 @@
      
   </script>
       <canvas width="250" height="500" id="TelaDois"></canvas>
-     <script>
+      <script>
         // Função de utilidade para gerar números inteiros aleatórios
         const getRandomInt2 = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
       
@@ -313,8 +313,8 @@
       
           return shuffledSequence;
         };
-       
-  // Função para obter a próxima peça da sequência
+      
+        // Função para obter a próxima peça da sequência
         const getNextTetromino2 = () => {
           if (tetrominoSequence.length === 0) {
             tetrominoSequence.push(...generateSequence2());
@@ -332,6 +332,7 @@
             col
           };
         };
+      
         // Função para rotacionar uma matriz no sentido anti-horário
         const rotateAntiClockwise2 = matrix => matrix[0].map((_, i) => matrix.map(row => row[i])).reverse();
       
@@ -348,8 +349,8 @@
               )
             )
           );
-
-          // Função para colocar a peça de tetris no campo de jogo
+      
+        // Função para colocar a peça de tetris no campo de jogo
         const placeTetromino2 = () => {
           tetromino2.matrix.forEach((row, rowIndex) => {
             row.forEach((val, colIndex) => {
@@ -359,36 +360,42 @@
       
                 if (playfieldRow >= 0) {
                   playfield2[playfieldRow][playfieldCol] = tetromino2.name;
-                    }
+                }
               }
             });
           });
-        }
-          let linesToRemove = [];
-       // Verifica se há linhas completas
+      
+          let linesToRemove = [];
+      
+          // Verifica se há linhas completas
           for (let row = playfield2.length - 1; row >= 0; row--) {
             if (playfield2[row].every(cell => !!cell)) {
               linesToRemove.push(row);
             }
-          }
-       // Remove as linhas completas, começando pelas mais baixas
+          }
+      
+          // Remove as linhas completas, começando pelas mais baixas
           linesToRemove.forEach(row => {
             playfield2.splice(row, 1);
           });
           atualizarPontos2(linesToRemove.length);
-       // Adiciona novas linhas vazias no topo para compensar as linhas removidas
+      
+          // Adiciona novas linhas vazias no topo para compensar as linhas removidas
           for (let i = 0; i < linesToRemove.length; i++) {
             playfield2.unshift(Array(10).fill(0));
           }
-       // Decrementa as linhas, para faze as que se encontram abaixo subirem
-         tetromino2.row -= linesToRemove.lenght;
-
-         tetromino2 = getNextTetromino2();
-         if (!isValidMove2(tetromino2.matrix, tetromino2.row, tetromino2.col)) {
-           showGameOver2();
-         }
-       };
-       // Função para exibir a tela de game over
+      
+          // Decrementa as linhas, para fazer as linhas abaixo subirem
+          tetromino2.row -= linesToRemove.length;
+      
+          tetromino2 = getNextTetromino2();
+      
+          if (!isValidMove2(tetromino2.matrix, tetromino2.row, tetromino2.col)) {
+            showGameOver2();
+          }
+        };
+      
+        // Função para exibir a tela de game over
         const showGameOver2 = () => {
           cancelAnimationFrame(rAF2);
           gameOver2 = true;
@@ -464,91 +471,92 @@
         let rAF2 = null;
         let gameOver2 = false;
         let count2 = 0;
-
-       //Função para gerar o Loop de iniciação do jogo
-         const loopTelaDois = () => {
-           rAF2 = requestAnimationFrame(loopTelaDois);
-           contex2.clearRect(0,0, canvas2.width, canva2. height);
-
-           playfield2.forEach((row, rowIndex) => {
-             if (cell) {
-               context2.fillStyle = colors2[cell];
-               context2.fillRect(conlIndex * grid2, rowIndex * grid2, grid2, grid2);
-             }
-           });
-         });
-
-         if (tetromino2) {
-           if (++count2 >30) {
-             const newRow = tetromino2.row -1;
-             count2 = 0;
-
-             if (isValidMove2(tetromino2.matrix, newRow, tetromino2.col)) {
-               tetromino2.row = newRow;
-             } else {
-               placeTetromino2();
-             }
-           }
-
-           context2.fillStyle = colors2[tetromino2.name];
-
-           tetromino2.matrix.forEach((row, rowIndex) => {
-             row.forEach((val, colIndex) => {
-               if (val) {
-                 context2. fillRect(
-                   (tetromino2.col + colIndex) * grid2,
-                   (tetromino2.row + rowIndex) * grid2,
-                   grid2,
-                   grid2
+      
+        //funão para gerar o Loop de iniciação do jogo
+        const loopTelaDois = () => {
+          rAF2 = requestAnimationFrame(loopTelaDois);
+          context2.clearRect(0, 0, canvas2.width, canvas2.height);
+      
+          playfield2.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+              if (cell) {
+                context2.fillStyle = colors2[cell];
+                context2.fillRect(colIndex * grid2, rowIndex * grid2, grid2, grid2);
+              }
+            });
+          });
+      
+          if (tetromino2) {
+            if (++count2 > 30) {
+              const newRow = tetromino2.row - 1;
+              count2 = 0;
+      
+              if (isValidMove2(tetromino2.matrix, newRow, tetromino2.col)) {
+                tetromino2.row = newRow;
+              } else {
+                placeTetromino2();
+              }
+            }
+      
+            context2.fillStyle = colors2[tetromino2.name];
+      
+            tetromino2.matrix.forEach((row, rowIndex) => {
+              row.forEach((val, colIndex) => {
+                if (val) {
+                  context2.fillRect(
+                    (tetromino2.col + colIndex) * grid2,
+                    (tetromino2.row + rowIndex) * grid2,
+                    grid2,
+                    grid2
                   );
-                 }
-             });
-           });
-         }
-       };
-       //função para movimentação das peças do tetris, ela recebe uma verificação passando pelo validador de movimento (isValidMove2)
-       document.addEventListener('keydown', (e) => {
-
-         const col = tetromino2.col;
-         const row = tetromino2.row;
-
-         if (e.key === 'ArrowLeft') {
-           const newCol = col -1;
-           if (isValidMove2(tetromino2.matrix, row, newCol)) {
-             tetromino2.col = newCol;
-           }
-         } else if (e.key === 'ArrowRight') {
-           const newCol = col +1;
-           if (isValidMove2(tetromino2.matrix, row, newCol)) {
-             tetromino2.com = newcol;
-           }
-         } else if (e.key === 'ArrowUp') {
-           const rotatedMatrix = rotateAntiClockwise2(tetromino2.matrix);
-           if (isValidMove2(rotatedMatrix, row, col)) {
-             tetromino2.matrix = rotatedMatrix;
-           }
-         } else if (e.key === 'ArrowDown') {
-           const newRow = row - 1;
-           if (isValidMove2(tetromino2.matrix, newRow, col)) {
-             tetromino2.row = neewRow;
-           }
-         }
-       });
-
-       /*Função que conta a pontuaçao da tela 2 a partir da quantiadde de linhas quebradas, recebendo 'Linhas',
-       a Pontuação vai de 100 a 800 variando com a quantiade de linhas quebradas*/
-         const autalizarPontos2 = (linhas) => {
-           const pontosPorlinha = [0, 100, 300, 500, 800];
-           pontos2 += pontosPorLinha[linhas];
-           pontosTotais = ponto1 + pontos2;
-           atualizarPontosTotal();
-         };
-       //Faz o requerimento para começar o loop (necessita que o loopTelaDois exista)
-         rAF2 = requestAnimationFrame(loopTelaDois);
-       
-       //variável para contar os pontos da tela2
-       let pontos2 = 0; 
-     </script>
+                }
+              });
+            });
+          }
+          
+        };
+      //função para movimentação das peças do Tetris, Ela recebe uma verificação passando pelo Validador de Movimento (isValidMove2)
+        document.addEventListener('keydown', (e) => {
+          if (gameOver2) return;
+      
+          const col = tetromino2.col;
+          const row = tetromino2.row;
+      
+          if (e.key === 'ArrowLeft') {
+            const newCol = col - 1;
+            if (isValidMove2(tetromino2.matrix, row, newCol)) {
+              tetromino2.col = newCol;
+            }
+          } else if (e.key === 'ArrowRight') {
+            const newCol = col + 1;
+            if (isValidMove2(tetromino2.matrix, row, newCol)) {
+              tetromino2.col = newCol;
+            }
+          } else if (e.key === 'ArrowUp') {
+            const rotatedMatrix = rotateAntiClockwise2(tetromino2.matrix);
+            if (isValidMove2(rotatedMatrix, row, col)) {
+              tetromino2.matrix = rotatedMatrix;
+            }
+          } else if (e.key === 'ArrowDown') {
+            const newRow = row - 1;
+            if (isValidMove2(tetromino2.matrix, newRow, col)) {
+              tetromino2.row = newRow;
+            }
+          }
+        });
+        let pontos2 = 0; //variavel para contar os pontos da Tela2
+        //Função que conta A pontuação da tela 2 a partir da quantidade de linhas quebradas, recebendo 'Linhas', a Pontuação vai de 100 a 800 variando com a quantidade de linhas quebradas
+        const atualizarPontos2 = (linhas) => {
+          const pontosPorLinha = [0, 100, 300, 500, 800];
+          pontos2 += pontosPorLinha[linhas];
+          pontosTotais = pontos1 + pontos2;
+          atualizarPontosTotal();
+        };
+        
+  
+        //faz o requerimento para começar o loop(necessita que o loppTelaDois exista)
+        rAF2 = requestAnimationFrame(loopTelaDois);
+      </script>
       <script>
         // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
         const atualizarPontosTotal = () => {
