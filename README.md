@@ -1,10 +1,5 @@
-# StrangerTetris
-Projeto de Tetris Duplo Feito tentando seguir o Paradigma da progamação Funcional em JavaScript.
-Enquanto uma das telas Cai normalmente, como um tetris padrão, sendo controlada pelas teclas de WASD
-a segunda Tela possui algo em particular que dificulta a experiencia. Ao invés de cair, as peças Sobem, mas além de subirem as colunas já formadas, que ainda nao foram completadas, vão caindo conforme As fileiras mais altas sao quebradas.
-O objetivo é sempre tentar quebrar o mais rapido possível as fileiras de tras.
-A segunda Tela é controlada usando as teclas de Seta.
-Todavia, O mecanismo de Game Over dos jogos é feito de Forma individual, se uma das telas morrer, nao ira gerar interferencia no Segundo.
+# Stranger Tetris
+Projeto de Tetris Duplo feito tentando seguir o paradigma da programação funcional em JavaScript. Enquanto uma das telas cai normalmente, como um Tetris padrão, sendo controlada pelas teclas de WASD, a segunda tela possui algo em particular que dificulta a experiência. Em vez de cair, as peças sobem, mas além de subirem, as colunas já formadas, que ainda não foram completadas, vão caindo conforme as fileiras mais altas são quebradas. O objetivo é sempre tentar quebrar o mais rápido possível as fileiras da frente. A segunda tela é controlada usando as teclas de seta. Todavia, o mecanismo de Game Over dos jogos é feito de forma individual. Se uma das telas morrer, não irá gerar interferência na segunda.
 
-- Refência utilizada para o desenvolvimento do "stranger Tetris":
-- https://github.com/chrokh/fp-games/tree/master/002-tetris
+Referência utilizada para o desenvolvimento do "Stranger Tetris":
+https://github.com/chrokh/fp-games/tree/master/002-tetris
