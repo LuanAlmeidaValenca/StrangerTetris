@@ -371,6 +371,15 @@
               linesToRemove.push(row);
             }
           }
+       // Remove as linhas completas, começando pelas mais baixas
+          linesToRemove.forEach(row => {
+            playfield2.splice(row, 1);
+          });
+          atualizarPontos2(linesToRemove.length);
+       // Adiciona novas linhas vazias no topo para compensar as linhas removidas
+          for (let i = 0; i < linesToRemove.length; i++) {
+            playfield2.unshift(Array(10).fill(0));
+          }
      </script>
       <script>
         // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
