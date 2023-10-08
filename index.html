@@ -464,6 +464,48 @@
         let rAF2 = null;
         let gameOver2 = false;
         let count2 = 0;
+
+       //Função para gerar o Loop de iniciação do jogo
+         const loopTelaDois = () => {
+           rAF2 = requestAnimationFrame(loopTelaDois);
+           contex2.clearRect(0,0, canvas2.width, canva2. height);
+
+           playfield2.forEach((row, rowIndex) => {
+             if (cell) {
+               context2.fillStyle = colors2[cell];
+               context2.fillRect(conlIndex * grid2, rowIndex * grid2, grid2, grid2);
+             }
+           });
+         });
+
+         if (tetromino2) {
+           if (++count2 >30) {
+             const newRow = tetromino2.row -1;
+             count2 = 0;
+
+             if (isValidMove2(tetromino2.matrix, newRow, tetromino2.col)) {
+               tetromino2.row = newRow;
+             } else {
+               placeTetromino2();
+             }
+           }
+
+           context2.fillStyle = colors2[tetromino2.name];
+
+           tetromino2.matrix.forEach((row, rowIndex) => {
+             row.forEach((val, colIndex) => {
+               if (val) {
+                 context2. fillRect(
+                   (tetromino2.col + colIndex) * grid2,
+                   (tetromino2.row + rowIndex) * grid2,
+                   grid2,
+                   grid2
+                  );
+                 }
+             });
+           });
+         }
+       };
      </script>
       <script>
         // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
