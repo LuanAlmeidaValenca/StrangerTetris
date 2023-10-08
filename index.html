@@ -506,6 +506,36 @@
            });
          }
        };
+       //função para movimentação das peças do tetris, ela recebe uma verificação passando pelo validador de movimento (isValidMove2)
+       document.addEventListener('keydown', (e) => {
+
+         const col = tetromino2.col;
+         const row = tetromino2.row;
+
+         if (e.key === 'ArrowLeft') {
+           const newCol = col -1;
+           if (isValidMove2(tetromino2.matrix, row, newCol)) {
+             tetromino2.col = newCol;
+           }
+         } else if (e.key === 'ArrowRight') {
+           const newCol = col +1;
+           if (isValidMove2(tetromino2.matrix, row, newCol)) {
+             tetromino2.com = newcol;
+           }
+         } else if (e.key === 'ArrowUp') {
+           const rotatedMatrix = rotateAntiClockwise2(tetromino2.matrix);
+           if (isValidMove2(rotatedMatrix, row, col)) {
+             tetromino2.matrix = rotatedMatrix;
+           }
+         } else if (e.key === 'ArrowDown') {
+           const newRow = row - 1;
+           if (isValidMove2(tetromino2.matrix, newRow, col)) {
+             tetromino2.row = neewRow;
+           }
+         }
+       });
+       //variável para contar os pontos da tela2
+       let pontos2 = 0; 
      </script>
       <script>
         // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
