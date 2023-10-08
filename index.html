@@ -332,6 +332,23 @@
             col
           };
         };
+        // Função para rotacionar uma matriz no sentido anti-horário
+        const rotateAntiClockwise2 = matrix => matrix[0].map((_, i) => matrix.map(row => row[i])).reverse();
+      
+        // Função para verificar se um movimento é válido
+        const isValidMove2 = (matrix, cellRow, cellCol) =>
+          matrix.every((row, rowIndex) =>
+            row.every((val, colIndex) =>
+              !val || (
+                cellCol + colIndex >= 0 &&
+                cellCol + colIndex < playfield2[0].length &&
+                cellRow + rowIndex >= 0 &&
+                cellRow + rowIndex < playfield2.length &&
+                !playfield2[cellRow + rowIndex][cellCol + colIndex]
+              )
+            )
+          );
+
      </script>
       <script>
         // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
