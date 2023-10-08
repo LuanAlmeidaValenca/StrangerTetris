@@ -3,3 +3,5 @@ Projeto de Tetris Duplo feito tentando seguir o paradigma da programação funci
 
 Referência utilizada para o desenvolvimento do "Stranger Tetris":
 https://github.com/chrokh/fp-games/tree/master/002-tetris
+
+Video explicativo do jogo: https://youtu.be/qJzP3DSYh3o
