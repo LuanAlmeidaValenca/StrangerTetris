@@ -57,7 +57,7 @@
             let rAF = null;
             let rAF2 = null;
             let count = 0;
-//Utilização de matrizes para definir o formato das peças, com letras para identificar de forma intuitiva a formação das peças 
+
             const PecasTetris = {
           'I': [
               [0, 0, 0, 0],
@@ -95,7 +95,7 @@
               [0, 0, 0],
           ]
       };
-//constante que usa a nomeação das peças para definir cores especificas para elas
+
       const CoresTetris = {
           'I': 'cyan',
           'O': 'yellow',
@@ -112,7 +112,7 @@
       // Função para gerar números inteiros aleatórios 
       const gerarNumeroAleatorio = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
   
-      // Função que gera uma sequência aleatória das peças, 
+      // Função que gera uma sequência aleatória das peças 
       const GeradorDeAleatoriedade = () => {
           const sequencia = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']; //Peças ja criadas e existentes
   
@@ -122,9 +122,7 @@
               .map((a) => a.value);
       };
       
-      /* Função para obter a próxima peça da sequência, Ele recebe a proxima peça de acordo com o GeradorDeAleatoriedade
-      caso a matriz SequenciaTetris esteja vazia, ela chama a função GeradorDeAleatoriedade para criar uma sequencia 
-      aleatoria de peças que são colocadas na matriz atravéz do push */
+      // Função para obter a próxima peça da sequência, Ele recebe a proxima peça de acordo com o GeradorDeAleatoriedade
       const ProximaPecaDeTetris = () => {
           if (SequenciaTetris.length === 0) {
               SequenciaTetris.push(...GeradorDeAleatoriedade());
@@ -158,9 +156,7 @@
               )
           );
   
-      /* Função para colocar a peça de tetris no campo de jogo, ela faz isso inicialmente a partir de uma verificação da possibilidade
-       do jogo ter ou não sido finalizado, pelo primeiro "if" que analisa se os limites do jogo já foram ultrapassados, caso contrario
-       é inserida uma peça na posição inicial da tela */
+      // Função para colocar a peça de tetris no campo de jogo
       const InjetarPecaTetris = () => {
           tetromino.matrix.map((row, rowIndex) => {
               row.map((val, colIndex) => {
@@ -173,13 +169,9 @@
                   }
               });
           });
-          // Variável para contar quantas linhas já foram quebradas, a medida que esse numero aumenta, é alterada  
-          // a pontuação do jogador
+          //variavel para contar quantas linhas ja foram quebradas
           let ColunasCheias = 0;
-        
-          /* Analisa se as linhas estão completas, esse procedimento é feito checando o valor de todos os elementos da linha, 
-          caso todos sejam diferente de 0, significa que ela está completa. Depois disso, FrameDoJogo.splice e FrameDoJogo.unshift
-          removem a linha e adicionam outra acima respectivamente*/
+  
           FrameDoJogo.filter((row, rowIndex) => {
               if (row.every(cell => !!cell)) {
                   FrameDoJogo.splice(rowIndex, 1);
@@ -196,27 +188,16 @@
       };
   
       
-      // Este trecho de código cria um objeto de contexto 2D em um elemento HTML canvas com o ID 'TelaUm'.
-      // Ele define uma grade com tamanho 25 e uma matriz vazia chamada 'SequenciaTetris'.
-      // O contexto 2D será usado para desenhar elementos gráficos na tela.
+  
       const canvas = document.getElementById('TelaUm');
       const context = canvas.getContext('2d');
       const grid = 25;
       const SequenciaTetris = [];
-      
-    // função que inicializa o campo de jogo como uma matriz de 20 linhas
-    // por 10 colunas, preenchida inicialmente com zeros. Também declara uma variável "tetromino"
-    // para representar a próxima peça de Tetris a ser controlada.
+  
       const FrameDoJogo = Array.from({ length: 20 }, () => Array(10).fill(0));
       let tetromino = ProximaPecaDeTetris();
       let gameOver = false;
-      
-     // função que representa o loop principal do jogo. Ela utiliza o requestAnimationFrame
-     // para criar um ciclo de animação. A cada quadro de animação, o contexto do canvas é limpo,
-    // e o campo de jogo é desenhado.
-    // A peça de Tetris atual (se existir) também é desenhada, e sua posição é atualizada
-    // periodicamente. Se a peça não puder se mover mais para baixo,     
-    // ela é injetada no campo de jogo. 
+  
       const loop = () => {
           rAF = requestAnimationFrame(loop);
           context.clearRect(0, 0, canvas.width, canvas.height);
@@ -258,9 +239,7 @@
           }
           
       };
-        //função que realiza a rotação de uma matriz no sentido anti-horário.
-        // Ela recebe uma matriz como entrada e retorna uma nova matriz que é a rotação
-        // da matriz de entrada.
+        // Função para rotacionar uma matriz no sentido anti-horário
         const rotate = matrix => matrix[0].map((_, i) => matrix.map(row => row[i])).reverse();
   
       //função para movimentação das peças do Tetris, Ela recebe uma verificação passando pelo Validador de Movimento (isValidMove2)
@@ -316,12 +295,7 @@
                 break;
             }
           });
-      // O código inicia um loop de animação 
-      //A função "atualizarPontos" é
-      // usada para atualizar a pontuação do jogo com base no número de linhas removidas.
-      // Ela recebe o número de linhas como parâmetro e calcula os pontos a serem adicionados
-      // com base em uma tabela de pontuação predefinida e, em seguida,
-      // atualiza a pontuação total chamando a função "atualizarPontosTotal".
+  
       rAF = requestAnimationFrame(loop);
 
       let pontos1 = 0;
@@ -330,8 +304,7 @@
       pontos1 += pontosPorLinha[linhas];
       atualizarPontosTotal();
 };
-         // função que exibe a tela de "GAME OVER"
-        // a tela com um fundo preto semi-transparente e exibe o texto "GAME OVER" no centro da tela.
+        // Função para exibir a tela de game over
         const showGameOver = () => {
                   cancelAnimationFrame(rAF);
                   gameOver = true;
@@ -351,27 +324,30 @@
       </script>
       <canvas width="250" height="500" id="TelaDois"></canvas>
       <script>
-        // Função de utilidade para gerar números inteiros aleatórios
-        const getRandomInt2 = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-      
-        // Esta função gera uma sequência aleatória de peças de Tetris.
+        
+        // Função para gerar a sequência aleatória das peças
         const generateSequence2 = () => {
           const sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
-          const shuffledSequence = [...sequence];
-      
-          for (let i = shuffledSequence.length - 1; i > 0; i--) {
-            const j = getRandomInt2(0, i);
-            [shuffledSequence[i], shuffledSequence[j]] = [shuffledSequence[j], shuffledSequence[i]];
-          }
-      
+
+          // Função para gerar um número inteiro aleatório
+          const getRandomInt2 = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+          // Cria um array com objetos contendo valores aleatórios e uma sequência original
+          const randomizedSequence = sequence.map(value => ({
+            sort: getRandomInt2(0, 1000), // Valor aleatório para ordenação
+            value: value,
+          }));
+
+          // faz a ordenação do array com base nos valores sort (ordem aleatória)
+          const sortedSequence = randomizedSequence.sort((a, b) => a.sort - b.sort);
+
+          // extrai os valores embaralhados em um novo array
+          const shuffledSequence = sortedSequence.map(item => item.value);
+          
           return shuffledSequence;
         };
       
-        // função que obtém a próxima peça da sequência de peças de Tetris.
-        // Ela verifica se a sequência de peças está vazia e, se estiver, gera uma nova sequência
-        // Em seguida, ela retira o primeiro elemento da sequência
-        // e obtém a matriz e o nome da peça correspondente. O col e o row determinam a posição inicial
-        // da peça no campo de jogo.
+        // Função para obter a próxima peça da sequência
         const getNextTetromino2 = () => {
           if (tetrominoSequence.length === 0) {
             tetrominoSequence.push(...generateSequence2());
@@ -390,19 +366,10 @@
           };
         };
       
-        // função que realiza a rotação de uma matriz no sentido anti-horário.
-        // Ela recebe uma matriz como entrada e retorna uma nova matriz que é a rotação
-        // da matriz de entrada.
+        // Função para rotacionar uma matriz no sentido anti-horário
         const rotateAntiClockwise2 = matrix => matrix[0].map((_, i) => matrix.map(row => row[i])).reverse();
       
-        // função que verifica se um movimento é válido para a peça de Tetris representada pela matriz 'matrix',
-        // quando tentamos movê-la para a posição 'cellRow' e 'cellCol' no campo de jogo.
-        // Ela utiliza a função 'every' para percorrer cada célula da matriz do tetromino, verificando se:
-        // 1. A célula não contém um valor verdadeiro (se estiver vazia, o movimento é válido);
-        // 2. A posição 'cellCol' + 'colIndex' está dentro dos limites horizontais do campo de jogo;
-        // 3. A posição 'cellRow' + 'rowIndex' está dentro dos limites verticais do campo de jogo;
-        // 4. A célula correspondente no campo de jogo 'playfield2' também está vazia.
-        // Se todas essas condições forem atendidas para cada célula da matriz do tetromino, o movimento é considerado válido
+        // Função para verificar se um movimento é válido
         const isValidMove2 = (matrix, cellRow, cellCol) =>
           matrix.every((row, rowIndex) =>
             row.every((val, colIndex) =>
@@ -416,69 +383,38 @@
             )
           );
       
-        // função que coloca a peça de Tetris atual
-        // no campo de jogo. Ela itera sobre os elementos da matriz do tetromino
-        // e os posiciona no campo de jogo, levando em consideração a posição atual do tetromino
-        // Se a posição estiver dentro dos limites do campo
-        // de jogo, o valor correspondente ao nome do tetromino é atribuído à célula
-        // correspondente no campo de jogo.
-        const placeTetromino2 = () => {
+        // Função para colocar a peça de tetris no campo de jogo
+        const InjetarPecaTetris2 = () => {
           tetromino2.matrix.map((row, rowIndex) => {
-            row.map((val, colIndex) => {
-              if (val) {
-                const playfieldRow = tetromino2.row + rowIndex;
-                const playfieldCol = tetromino2.col + colIndex;
-      
-                if (playfieldRow >= 0) {
-                  playfield2[playfieldRow][playfieldCol] = tetromino2.name;
-                }
+              row.map((val, colIndex) => {
+                  if (val) {
+                      if (tetromino2.row + rowIndex < 0) {
+                          return showGameOver2();
+                      }
+  
+                      playfield2[tetromino2.row + rowIndex][tetromino2.col + colIndex] = tetromino2.name;
+                  }
+              });
+          });
+          //variavel para contar quantas linhas ja foram quebradas
+          let ColunasCheias = 0;
+  
+          playfield2.filter((row, rowIndex) => {
+              if (row.every(cell => !!cell)) {
+                  playfield2.splice(rowIndex, 1);
+                  playfield2.unshift(Array(10).fill(0));
+                  ColunasCheias++;
               }
-            });
           });
-      
-          let linesToRemove = [];
-      
-          //  função que verifica se há linhas completas no campo de jogo .
-          // Ele percorre o campo de baixo para cima e, para cada linha,
-          // verifica se todas as células da linha contêm valores verdadeiros (diferentes de 0).
-          // Se uma linha estiver completa, é removido.
-          for (let row = playfield2.length - 1; row >= 0; row--) {
-            if (playfield2[row].every(cell => !!cell)) {
-              linesToRemove.push(row);
-            }
+  
+          if (ColunasCheias > 0) {
+              atualizarPontos2(ColunasCheias);
           }
-      
-          // função que remove as linhas completas do campo de jogo,
-          // começando pelas linhas mais baixas.
-          linesToRemove.filter(row => {
-            playfield2.splice(row, 1);
-          });
-          atualizarPontos2(linesToRemove.length);
-      
-          // função que adiciona novas linhas vazias no topo do campo de jogo 
-          // para compensar as linhas que foram removidas anteriormente.
-          for (let i = 0; i < linesToRemove.length; i++) {
-            playfield2.unshift(Array(10).fill(0));
-          }
-      
-          // função responsável por realizar as seguintes ações:
-          // 1. Decrementar a posição da linha do tetromino em um valor igual à quantidade de linhas a serem removidas,
-          // fazendo com que as linhas abaixo subam.
-          // 2. Obter o próximo tetromino da sequência usando a função 'getNextTetromino2'.
-          // 3. Verificar se o novo tetromino é colocado em uma posição válida no campo de jogo usando a função 'isValidMove2'.
-          // 4. Se o novo tetromino não puder ser colocado em uma posição válida, exibe a tela de "GAME OVER" usando a função 'showGameOver2'.
-          tetromino2.row -= linesToRemove.length;
-      
+  
           tetromino2 = getNextTetromino2();
+      };
       
-          if (!isValidMove2(tetromino2.matrix, tetromino2.row, tetromino2.col)) {
-            showGameOver2();
-          }
-        };
-      
-        // função que exibe a tela de "GAME OVER" na tela 2 do jogo Tetris quando o jogo termina.
-        // Ela cancela o loop de animação, define a variável 'gameOver2' como verdadeira, preenche
-        // a tela com um fundo preto semi-transparente e exibe o texto "GAME OVER" no centro da tela.
+        // Função para exibir a tela de game over
           const showGameOver2 = () => {
           cancelAnimationFrame(rAF2);
           gameOver2 = true;
@@ -504,10 +440,6 @@
         let tetromino2 = getNextTetromino2();
         let gameOver2 = false;
         //função para gerar o Loop de iniciação do jogo
-        // Ela utiliza o requestAnimationFrame para chamar a si mesma repetidamente e
-        // atualiza a tela 2, limpando o contexto de renderização, desenhando o campo de jogo,
-        // manipulando a queda do tetromino e verificando colisões. Também lida com a
-        // renderização gráfica do tetromino atual na tela 2.
         const loopTelaDois = () => {
           rAF2 = requestAnimationFrame(loopTelaDois);
           context2.clearRect(0, 0, canvas2.width, canvas2.height);
@@ -529,7 +461,7 @@
               if (isValidMove2(tetromino2.matrix, newRow, tetromino2.col)) {
                 tetromino2.row = newRow;
               } else {
-                placeTetromino2();
+                InjetarPecaTetris2();
               }
             }
       
@@ -581,10 +513,10 @@
           }
           return tetromino2;
         };
-          
+
           document.addEventListener('keydown', (e) => {
             if (gameOver2) return;
-            //Controles da tela invertida
+
             switch (e.which) {
               case 74: // Tecla J (esquerda)
                 tetromino2 = moverParaEsquerda(tetromino2, playfield2, isValidMove2);
@@ -606,10 +538,7 @@
 
 
         let pontos2 = 0; //variavel para contar os pontos da Tela2
-        
-        // Esta função calcula a pontuação da tela 2 com base na quantidade de linhas quebradas.
-        // Em seguida, chama a função 'atualizarPontosTotal' para atualizar a pontuação total
-        // exibida na página, que inclui as pontuações de ambas as telas.
+        //Função que conta A pontuação da tela 2 a partir da quantidade de linhas quebradas, recebendo 'Linhas', a Pontuação vai de 100 a 800 variando com a quantidade de linhas quebradas
         const atualizarPontos2 = (linhas) => {
           const pontosPorLinha = [0, 100, 300, 500, 800];
           pontos2 += pontosPorLinha[linhas];
@@ -619,9 +548,7 @@
         rAF2 = requestAnimationFrame(loopTelaDois);
       </script>
       <script>
-        // Esta função atualiza um elemento HTML na página para exibir a
-        // pontuação total, que é calculada somando as pontuações das duas
-        // telas do jogo diferentes.
+        // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
         const atualizarPontosTotal = () => {
           const pontuacaoTotal = pontos1 + pontos2;
           const elementoPontuacao = document.getElementById('pontuacao');
