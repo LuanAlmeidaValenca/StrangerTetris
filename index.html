@@ -340,7 +340,11 @@
           return shuffledSequence;
         };
       
-        // Função para obter a próxima peça da sequência
+        // Esta função obtém a próxima peça da sequência de peças de Tetris.
+        // Ela verifica se a sequência de peças está vazia e, se estiver, gera uma nova sequência
+        // Em seguida, ela retira o primeiro elemento da sequência
+        // e obtém a matriz e o nome da peça correspondente. O col e o row determinam a posição inicial
+        // da peça no campo de jogo.
         const getNextTetromino2 = () => {
           if (tetrominoSequence.length === 0) {
             tetrominoSequence.push(...generateSequence2());
@@ -359,10 +363,19 @@
           };
         };
       
-        // Função para rotacionar uma matriz no sentido anti-horário
+        // Esta função realiza a rotação de uma matriz no sentido anti-horário.
+        // Ela recebe uma matriz como entrada e retorna uma nova matriz que é a rotação
+        // da matriz de entrada.
         const rotateAntiClockwise2 = matrix => matrix[0].map((_, i) => matrix.map(row => row[i])).reverse();
       
-        // Função para verificar se um movimento é válido
+        // Esta função verifica se um movimento é válido para a peça de Tetris representada pela matriz 'matrix',
+        // quando tentamos movê-la para a posição 'cellRow' e 'cellCol' no campo de jogo.
+        // Ela utiliza a função 'every' para percorrer cada célula da matriz do tetromino, verificando se:
+        // 1. A célula não contém um valor verdadeiro (se estiver vazia, o movimento é válido);
+        // 2. A posição 'cellCol' + 'colIndex' está dentro dos limites horizontais do campo de jogo;
+        // 3. A posição 'cellRow' + 'rowIndex' está dentro dos limites verticais do campo de jogo;
+        // 4. A célula correspondente no campo de jogo 'playfield2' também está vazia.
+        // Se todas essas condições forem atendidas para cada célula da matriz do tetromino, o movimento é considerado válido
         const isValidMove2 = (matrix, cellRow, cellCol) =>
           matrix.every((row, rowIndex) =>
             row.every((val, colIndex) =>
@@ -376,7 +389,12 @@
             )
           );
       
-        // Função para colocar a peça de tetris no campo de jogo
+        // função que coloca a peça de Tetris atual
+        // no campo de jogo. Ela itera sobre os elementos da matriz do tetromino
+        // e os posiciona no campo de jogo, levando em consideração a posição atual do tetromino
+        // Se a posição estiver dentro dos limites do campo
+        // de jogo, o valor correspondente ao nome do tetromino é atribuído à célula
+        // correspondente no campo de jogo.
         const placeTetromino2 = () => {
           tetromino2.matrix.map((row, rowIndex) => {
             row.map((val, colIndex) => {
@@ -393,25 +411,35 @@
       
           let linesToRemove = [];
       
-          // Verifica se há linhas completas
+          //  função que verifica se há linhas completas no campo de jogo .
+          // Ele percorre o campo de baixo para cima e, para cada linha,
+          // verifica se todas as células da linha contêm valores verdadeiros (diferentes de 0).
+          // Se uma linha estiver completa, é removido.
           for (let row = playfield2.length - 1; row >= 0; row--) {
             if (playfield2[row].every(cell => !!cell)) {
               linesToRemove.push(row);
             }
           }
       
-          // Remove as linhas completas, começando pelas mais baixas
+          // função que remove as linhas completas do campo de jogo,
+          // começando pelas linhas mais baixas.
           linesToRemove.filter(row => {
             playfield2.splice(row, 1);
           });
           atualizarPontos2(linesToRemove.length);
       
-          // Adiciona novas linhas vazias no topo para compensar as linhas removidas
+          // função que adiciona novas linhas vazias no topo do campo de jogo 
+          // para compensar as linhas que foram removidas anteriormente.
           for (let i = 0; i < linesToRemove.length; i++) {
             playfield2.unshift(Array(10).fill(0));
           }
       
-          // Decrementa as linhas, para fazer as linhas abaixo subirem
+          // função responsável por realizar as seguintes ações:
+          // 1. Decrementar a posição da linha do tetromino em um valor igual à quantidade de linhas a serem removidas,
+          // fazendo com que as linhas abaixo subam.
+          // 2. Obter o próximo tetromino da sequência usando a função 'getNextTetromino2'.
+          // 3. Verificar se o novo tetromino é colocado em uma posição válida no campo de jogo usando a função 'isValidMove2'.
+          // 4. Se o novo tetromino não puder ser colocado em uma posição válida, exibe a tela de "GAME OVER" usando a função 'showGameOver2'.
           tetromino2.row -= linesToRemove.length;
       
           tetromino2 = getNextTetromino2();
@@ -421,7 +449,9 @@
           }
         };
       
-        // Função para exibir a tela de game over
+        // função que exibe a tela de "GAME OVER" na tela 2 do jogo Tetris quando o jogo termina.
+        // Ela cancela o loop de animação, define a variável 'gameOver2' como verdadeira, preenche
+        // a tela com um fundo preto semi-transparente e exibe o texto "GAME OVER" no centro da tela.
           const showGameOver2 = () => {
           cancelAnimationFrame(rAF2);
           gameOver2 = true;
@@ -447,6 +477,10 @@
         let tetromino2 = getNextTetromino2();
         let gameOver2 = false;
         //função para gerar o Loop de iniciação do jogo
+        // Ela utiliza o requestAnimationFrame para chamar a si mesma repetidamente e
+        // atualiza a tela 2, limpando o contexto de renderização, desenhando o campo de jogo,
+        // manipulando a queda do tetromino e verificando colisões. Também lida com a
+        // renderização gráfica do tetromino atual na tela 2.
         const loopTelaDois = () => {
           rAF2 = requestAnimationFrame(loopTelaDois);
           context2.clearRect(0, 0, canvas2.width, canvas2.height);
@@ -520,10 +554,10 @@
           }
           return tetromino2;
         };
-
+          
           document.addEventListener('keydown', (e) => {
             if (gameOver2) return;
-
+            //Controles da tela invertida
             switch (e.which) {
               case 74: // Tecla J (esquerda)
                 tetromino2 = moverParaEsquerda(tetromino2, playfield2, isValidMove2);
@@ -545,7 +579,10 @@
 
 
         let pontos2 = 0; //variavel para contar os pontos da Tela2
-        //Função que conta A pontuação da tela 2 a partir da quantidade de linhas quebradas, recebendo 'Linhas', a Pontuação vai de 100 a 800 variando com a quantidade de linhas quebradas
+        
+        // Esta função calcula a pontuação da tela 2 com base na quantidade de linhas quebradas.
+        // Em seguida, chama a função 'atualizarPontosTotal' para atualizar a pontuação total
+        // exibida na página, que inclui as pontuações de ambas as telas.
         const atualizarPontos2 = (linhas) => {
           const pontosPorLinha = [0, 100, 300, 500, 800];
           pontos2 += pontosPorLinha[linhas];
@@ -555,7 +592,9 @@
         rAF2 = requestAnimationFrame(loopTelaDois);
       </script>
       <script>
-        // Funçao que exibe a contagem de Pontos das duas telas juntas na pagina
+        // Esta função atualiza um elemento HTML na página para exibir a
+        // pontuação total, que é calculada somando as pontuações das duas
+        // telas do jogo diferentes.
         const atualizarPontosTotal = () => {
           const pontuacaoTotal = pontos1 + pontos2;
           const elementoPontuacao = document.getElementById('pontuacao');
