@@ -57,7 +57,7 @@
             let rAF = null;
             let rAF2 = null;
             let count = 0;
-
+//Utilização de matrizes para definir o formato das peças, com letras para identificar de forma intuitiva a formação das peças 
             const PecasTetris = {
           'I': [
               [0, 0, 0, 0],
@@ -95,7 +95,7 @@
               [0, 0, 0],
           ]
       };
-
+//constante que usa a nomeação das peças para definir cores especificas para elas
       const CoresTetris = {
           'I': 'cyan',
           'O': 'yellow',
@@ -112,7 +112,7 @@
       // Função para gerar números inteiros aleatórios 
       const gerarNumeroAleatorio = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
   
-      // Função que gera uma sequência aleatória das peças 
+      // Função que gera uma sequência aleatória das peças, 
       const GeradorDeAleatoriedade = () => {
           const sequencia = ['I', 'J', 'L', 'O', 'S', 'T', 'Z']; //Peças ja criadas e existentes
   
@@ -122,7 +122,9 @@
               .map((a) => a.value);
       };
       
-      // Função para obter a próxima peça da sequência, Ele recebe a proxima peça de acordo com o GeradorDeAleatoriedade
+      /* Função para obter a próxima peça da sequência, Ele recebe a proxima peça de acordo com o GeradorDeAleatoriedade
+      caso a matriz SequenciaTetris esteja vazia, ela chama a função GeradorDeAleatoriedade para criar uma sequencia 
+      aleatoria de peças que são colocadas na matriz atravéz do push */
       const ProximaPecaDeTetris = () => {
           if (SequenciaTetris.length === 0) {
               SequenciaTetris.push(...GeradorDeAleatoriedade());
@@ -156,7 +158,9 @@
               )
           );
   
-      // Função para colocar a peça de tetris no campo de jogo
+      /* Função para colocar a peça de tetris no campo de jogo, ela faz isso inicialmente a partir de uma verificação da possibilidade
+       do jogo ter ou não sido finalizado, pelo primeiro "if" que analisa se os limites do jogo já foram ultrapassados, caso contrario
+       é inserida uma peça na posição inicial da tela */
       const InjetarPecaTetris = () => {
           tetromino.matrix.map((row, rowIndex) => {
               row.map((val, colIndex) => {
@@ -169,9 +173,13 @@
                   }
               });
           });
-          //variavel para contar quantas linhas ja foram quebradas
+          // Variável para contar quantas linhas já foram quebradas, a medida que esse numero aumenta, é alterada  
+          // a pontuação do jogador
           let ColunasCheias = 0;
-  
+        
+          /* Analisa se as linhas estão completas, esse procedimento é feito checando o valor de todos os elementos da linha, 
+          caso todos sejam diferente de 0, significa que ela está completa. Depois disso, FrameDoJogo.splice e FrameDoJogo.unshift
+          removem a linha e adicionam outra acima respectivamente*/
           FrameDoJogo.filter((row, rowIndex) => {
               if (row.every(cell => !!cell)) {
                   FrameDoJogo.splice(rowIndex, 1);
