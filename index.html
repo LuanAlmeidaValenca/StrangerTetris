@@ -196,16 +196,27 @@
       };
   
       
-  
+      // Este trecho de código cria um objeto de contexto 2D em um elemento HTML canvas com o ID 'TelaUm'.
+      // Ele define uma grade com tamanho 25 e uma matriz vazia chamada 'SequenciaTetris'.
+      // O contexto 2D será usado para desenhar elementos gráficos na tela.
       const canvas = document.getElementById('TelaUm');
       const context = canvas.getContext('2d');
       const grid = 25;
       const SequenciaTetris = [];
-  
+      
+    // função que inicializa o campo de jogo como uma matriz de 20 linhas
+    // por 10 colunas, preenchida inicialmente com zeros. Também declara uma variável "tetromino"
+    // para representar a próxima peça de Tetris a ser controlada.
       const FrameDoJogo = Array.from({ length: 20 }, () => Array(10).fill(0));
       let tetromino = ProximaPecaDeTetris();
       let gameOver = false;
-  
+      
+     // função que representa o loop principal do jogo. Ela utiliza o requestAnimationFrame
+     // para criar um ciclo de animação. A cada quadro de animação, o contexto do canvas é limpo,
+    // e o campo de jogo é desenhado.
+    // A peça de Tetris atual (se existir) também é desenhada, e sua posição é atualizada
+    // periodicamente. Se a peça não puder se mover mais para baixo,     
+    // ela é injetada no campo de jogo. 
       const loop = () => {
           rAF = requestAnimationFrame(loop);
           context.clearRect(0, 0, canvas.width, canvas.height);
@@ -247,7 +258,9 @@
           }
           
       };
-        // Função para rotacionar uma matriz no sentido anti-horário
+        //função que realiza a rotação de uma matriz no sentido anti-horário.
+        // Ela recebe uma matriz como entrada e retorna uma nova matriz que é a rotação
+        // da matriz de entrada.
         const rotate = matrix => matrix[0].map((_, i) => matrix.map(row => row[i])).reverse();
   
       //função para movimentação das peças do Tetris, Ela recebe uma verificação passando pelo Validador de Movimento (isValidMove2)
@@ -303,7 +316,12 @@
                 break;
             }
           });
-  
+      // O código inicia um loop de animação 
+      //A função "atualizarPontos" é
+      // usada para atualizar a pontuação do jogo com base no número de linhas removidas.
+      // Ela recebe o número de linhas como parâmetro e calcula os pontos a serem adicionados
+      // com base em uma tabela de pontuação predefinida e, em seguida,
+      // atualiza a pontuação total chamando a função "atualizarPontosTotal".
       rAF = requestAnimationFrame(loop);
 
       let pontos1 = 0;
@@ -312,7 +330,8 @@
       pontos1 += pontosPorLinha[linhas];
       atualizarPontosTotal();
 };
-        // Função para exibir a tela de game over
+         // função que exibe a tela de "GAME OVER"
+        // a tela com um fundo preto semi-transparente e exibe o texto "GAME OVER" no centro da tela.
         const showGameOver = () => {
                   cancelAnimationFrame(rAF);
                   gameOver = true;
@@ -335,7 +354,7 @@
         // Função de utilidade para gerar números inteiros aleatórios
         const getRandomInt2 = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
       
-        // Função para gerar a sequência aleatória das peças
+        // Esta função gera uma sequência aleatória de peças de Tetris.
         const generateSequence2 = () => {
           const sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
           const shuffledSequence = [...sequence];
@@ -348,7 +367,7 @@
           return shuffledSequence;
         };
       
-        // Esta função obtém a próxima peça da sequência de peças de Tetris.
+        // função que obtém a próxima peça da sequência de peças de Tetris.
         // Ela verifica se a sequência de peças está vazia e, se estiver, gera uma nova sequência
         // Em seguida, ela retira o primeiro elemento da sequência
         // e obtém a matriz e o nome da peça correspondente. O col e o row determinam a posição inicial
@@ -371,12 +390,12 @@
           };
         };
       
-        // Esta função realiza a rotação de uma matriz no sentido anti-horário.
+        // função que realiza a rotação de uma matriz no sentido anti-horário.
         // Ela recebe uma matriz como entrada e retorna uma nova matriz que é a rotação
         // da matriz de entrada.
         const rotateAntiClockwise2 = matrix => matrix[0].map((_, i) => matrix.map(row => row[i])).reverse();
       
-        // Esta função verifica se um movimento é válido para a peça de Tetris representada pela matriz 'matrix',
+        // função que verifica se um movimento é válido para a peça de Tetris representada pela matriz 'matrix',
         // quando tentamos movê-la para a posição 'cellRow' e 'cellCol' no campo de jogo.
         // Ela utiliza a função 'every' para percorrer cada célula da matriz do tetromino, verificando se:
         // 1. A célula não contém um valor verdadeiro (se estiver vazia, o movimento é válido);
